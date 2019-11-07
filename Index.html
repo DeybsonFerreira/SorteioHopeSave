@@ -1,0 +1,166 @@
+<html ng-app="app">
+
+<head>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.css">
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+  <title>
+    Sorteador de nomes
+  </title>
+
+</head>
+
+<body ng-controller="MyCtrl">
+
+<header>
+<br>
+	Development: Deybson Ferreira 
+</header>
+	
+<br>
+
+    <h1 style="color: rgb(248, 249, 255); text-shadow: #146ccf 5px 3px 10px;">HOPE SAVE MATAO - SORTEIO  <i class="star icon"></i></h1>
+
+
+
+
+
+
+
+
+
+
+<br><br><br>
+    <div class="ui form">
+      <div class="inline fields">
+        <div class="four wide field">
+          <label style="color: white; text-shadow: #05284f 5px 3px 10px;">Nome</label>
+          <input ng-model="inData" id="data" type="text" placeholder="Nome do participante">
+        </div>
+      </div>
+      <div class="inline fields">
+
+        <div class="three wide field">
+          <button ng-click="addData()" class="ui blue button">
+            <i class="add icon"></i>
+            Adicionar
+          </button>
+
+          <button ng-click="sortName()" class="ui green button">
+            <i class="smile icon"></i>
+            Sortear
+          </button>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- winner -->
+    <br><br><br>
+    <div id="winner" class="ui centered cards">
+      <div class="card">
+        <div class="image">
+          <img src="img.jpg">
+          <h1 style="color: rgb(56, 41, 139); text-shadow: rgb(167, 114, 236) 5px 10px 4px;">{{randomItem}} <i
+              class="star icon"></i></h1>
+          <button ng-click="btnNovo()" class="ui green button">
+            <i class="smile icon"></i>
+            Novo Sorteio
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Candidates -->
+    <div class="ui six doubling cards" id="cardHope">
+      <div class="card" ng-repeat="data in myData">
+        <div class="image">
+          <h1 style="color: rgb(255, 255, 255); text-shadow: rgb(13, 22, 148) 5px 3px 10px;">{{data}}</h1>
+          <img src="img.jpg">
+          <button ng-click="removeData(data)" class="ui red small button">
+            <i class="times icon"></i></button>
+        </div>
+      </div>
+    </div>
+
+   
+	
+</body>
+
+</html>
+
+
+
+<style>
+
+header{
+background-color:black;
+color:white; 
+opacity: 0.5;
+font-size:20px;
+height:70px;
+  
+  }
+
+.ui.cards .card{
+background-color: black;
+}
+
+  body {
+    margin-left: 10%;
+    margin-right: 10%;
+    /* background-image: linear-gradient(to bottom, #05284f, #184377, #2a61a2, #3c80d0, #4ca1ff); */
+
+    background-image: linear-gradient(to right top, #2b2381, #313193, #3640a5, #3a4eb7, #3e5dc9);
+
+    background-repeat: repeat-y;
+  }
+</style>
+
+
+<script type="text/javascript">
+  app = angular.module('app', []);
+  app.controller('MyCtrl', function ($scope) {
+    $scope.myData = [];
+
+    $scope.addData = function () {
+      $scope.myData.push($scope.inData);
+      $scope.inData = "";
+    }
+    $scope.removeData = function (selData) {
+
+      $scope.myData.splice($scope.myData.indexOf(selData), 1);
+    }
+
+    $scope.sortName = function () {
+      var myArray = $scope.myData;
+      var randomItem = myArray[Math.floor(Math.random() * myArray.length)];
+      $scope.randomItem = randomItem;
+
+      $("#cardHope").hide(4000);
+      $("#winner").show(8000);
+    }
+
+    $scope.btnNovo = function () {
+      delete $scope.randomItem;
+      delete $scope.myData;
+      $scope.myData = [];
+      $("#winner").hide(100);
+      location.reload();
+
+    }
+
+    $("#winner").hide();
+
+    $("#data").on('keypress', function (e) {
+      if (e.which == 13) {
+        $scope.addData();
+        $scope.$apply();
+      }
+    });
+
+  });
+</script>
